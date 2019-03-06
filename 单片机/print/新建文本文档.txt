@@ -1,0 +1,19 @@
+#include <reg52.h>
+#include <intrins.h>
+#include <stdio.h>
+
+char putchar(char s)
+{
+	SBUF = s;
+	while(TI == 0 )
+	{
+		_nop_();
+	}
+	TI = 0;
+	return s;
+}
+
+void main(void)
+{
+	printf("test\n");
+}

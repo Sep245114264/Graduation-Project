@@ -1,0 +1,237 @@
+#header
+{
+    background-color: black;
+    height: 60px;
+    color: white;
+}
+#footer
+{
+    background-color: red;
+    height: 150px;
+}  
+.content-window
+{
+    margin-left: 50px;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    width: 400px;
+    height: 500px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.inner
+{
+    border: solid 1px black;
+    box-sizing: border-box;
+    border-radius: 10px;
+    box-shadow: 0 0 20px 3px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    transition: all 1s;
+}
+.content-window:last-child
+{
+    margin-right: 25px;
+}
+#content
+{
+    margin-left: 50px;
+    margin-right: 50px;
+    display: flex;
+    justify-content: center;
+}
+#content::after
+{
+    content: '';
+    height: 0;
+    clear:both;
+    display: block;
+}
+
+/***************************/
+/*         header          */
+/***************************/
+#header
+{
+    display: flex;
+    /*justify-content: center;*/
+    align-items: center;
+    justify-content: space-between;
+}
+#header-title
+{
+    font-family: "LiSu";
+    margin-left: 20px;
+    font-size: 1.8em;
+    text-shadow: 11px 4px 20px;
+}
+#user-data
+{
+    margin-right: 20px;
+}
+
+/*#temperature-window
+{
+    background-color: #f7d699;
+    
+}
+
+#humidity-window
+{
+    background-color: #f7d699;
+}
+
+#lux-window
+{
+    background-color: #f7d699
+}*/
+
+/**********************************/
+/*      temperature-window        */
+/**********************************/
+.inner
+{
+    transform-style: preserve-3d;
+}
+.content-window:hover .inner
+{
+    transform: rotateY(-180deg);
+}
+.window-front
+{
+    position: absolute;
+    display: flex;
+    justify-items: center;
+    flex-direction: column;
+    border-radius: 10px;
+    width: 100%;
+    height: 100%;
+    background-color: #f7d699;
+    backface-visibility: hidden;
+}
+.window-back
+{
+    background-color: #f7d699;
+    border-radius: 10px;
+    width: 100%;
+    height: 100%;
+    transform: rotateY(-180deg);
+    backface-visibility: hidden;
+    text-align: center;
+}
+#temperature-window-back
+{
+    background-image: linear-gradient(to top, blue,white, red);
+}
+.window-name
+{
+    text-align: center;
+}
+
+/********************************/
+.window-data
+{
+    width: 40%;
+    position: absolute;
+    font-size: 4em;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0 auto;
+}
+#dividing
+{
+    height: 0.4em;
+    width: 100%;
+    background-image: linear-gradient(to right, #000 0%, #000 75%, transparent 50%);
+    background-size: 0.5em 0.1em;
+    background-repeat: repeat-x;
+}
+#fah
+{
+    margin-top: -24px;
+}
+/******************************************/
+/*                modal                   */
+/******************************************/
+h4
+{
+    margin-left: 20px;
+}
+#modal
+{
+    display: none;
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.fadeIn
+{
+    animation: fadeIn 0.6s;
+}
+
+@keyframes fadeIn 
+{
+    from {transform: scale(0)}
+    to {transform: scale(1)}
+}
+
+.fadeOut
+{
+    animation: fadeOut 0.6s;
+}
+
+@keyframes fadeOut
+{
+    from {transform: scale(1)}
+    to {transform: scale(0)}
+}
+
+#modal-content
+{
+    background-color: #fff;
+    width: 80%;
+    max-width: 700px;
+    height: 50%;
+    max-height: 500px;
+    margin: 100px auto;
+    border-radius: 10px;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-between;
+}
+
+#modal-title
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+}
+
+#close
+{
+    font-size: 30px;
+    color: #b7b7b7;
+    font-weight: bold;
+    margin-right: 20px;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+#close:hover
+{
+    color: #95b4ed;
+    cursor: pointer;
+}

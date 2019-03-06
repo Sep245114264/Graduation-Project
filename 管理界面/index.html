@@ -1,0 +1,35 @@
+<!DOCTYPE html> 
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0"/>
+        <title>智能家居控制系统</title>
+        <link href="css/style.css" rel="stylesheet">
+    </head>
+    <body>
+        <section>
+            <form class="log-form" method="POST">
+                <div class="log-title">
+                    <p>智能家居控制系统</p>
+                </div>
+                <main class="log">
+                    <div class="username">
+                        <input type="text" name="username" placeholder="用户名" autocomplete="off" required="true" title="请输入用户名"/>
+                    </div>
+                    <div class="password">
+                        <input type="password" name="password" placeholder="密码" required="true" title="请输入密码"/>
+                    </div>
+                    <div class="log-button">
+                        <input type="submit" value="登录" />   
+                    </div>
+                    <div class="ex-choose">
+                        <label for="auto-log">自动登陆</label>
+                        <input type="checkbox" id="auto-log" name="autoLog" />
+                    </div>
+                </main>
+            </form>
+        </section>
+        <section class="bg"></section>
+        <script src="js/main.js"></script>
+    </body>
+</html>

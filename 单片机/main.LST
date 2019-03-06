@@ -1,0 +1,214 @@
+C51 COMPILER V9.01   MAIN                                                                  01/30/2019 14:17:12 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.OBJ
+COMPILER INVOKED BY: D:\KEIL\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include "system.h"
+   2          #include "wifi.c"
+   3          #include "I2C.h"
+   4          #include "I2C.c"
+   5          #include "motor.c"
+   6          
+   7          void delay10us(void);
+   8          void delayMs(u16 timers);
+   9          void delayUs(u16 timers);       // 10的倍数
+  10          void rstDHT11(void);
+  11          void readDHT11(u8 * buf);
+  12          u16 calLen(u8 * str);
+  13          u8 readDHT11Byte(void);
+  14          bit ISendByte(u8 sla,u8 c);
+  15          u8 IRcvByte(u8 sla);
+  16          u16 count = 0;
+  17          void timer1() interrupt 1
+  18          {
+  19   1              u16 lux = 0;
+  20   1              u16 con = 0;
+  21   1              u8 recBuf[7];
+  22   1              TH0 = (65536 - 50000) / 256;
+  23   1              TL0 = (65536 - 50000) % 256;
+  24   1      
+  25   1              if( count++ == 100)     
+  26   1              {       
+  27   2                      readDHT11(recBuf);
+  28   2                      ISendByte(PCF8591, 0x01);
+  29   2                      lux = IRcvByte(PCF8591); 
+  30   2                      recBuf[5] = lux;
+  31   2                      ISendByte(PCF8591, 0x00);
+  32   2                      con = IRcvByte(PCF8591);
+  33   2                      recBuf[6] = con;
+  34   2                      sendUart(recBuf, 7);
+  35   2                      count = 0;
+  36   2              }
+  37   1      }
+  38          
+  39          void main(void)
+  40          {
+  41   1              
+  42   1              motorStop();
+  43   1              initUart();
+  44   1              delayMs(5000);
+  45   1              sendUart(DEVICE_INFO, calLen(DEVICE_INFO));
+  46   1              delayMs(5000); 
+  47   1              ET0 = 1;
+  48   1              TR0 = 1;
+  49   1              //sendUart("connect ok\r\n");
+  50   1              while(1)
+  51   1              {       
+  52   2                       //motorData = forward[1];
+  53   2                      if (receiveBuff[0] == 49)
+  54   2                              {
+  55   3                                      motorFWD();
+C51 COMPILER V9.01   MAIN                                                                  01/30/2019 14:17:12 PAGE 2   
+
+  56   3                              }
+  57   2                              else
+  58   2                              {
+  59   3                                      motorStop();
+  60   3                              }
+  61   2                      if (rxFlag)
+  62   2                      {       
+  63   3                              
+  64   3                              //sendUart(receiveBuff, rxCnt+2);
+  65   3                              rxCnt = 0;
+  66   3                              rxFlag = 0;
+  67   3                      }
+  68   2                      //delayMs(5000); 
+  69   2              }
+  70   1      }
+  71          
+  72          u16 calLen(u8 * str)
+  73          {
+  74   1              u16 count = 0;
+  75   1              while (*(str++))
+  76   1              {
+  77   2                      ++count;
+  78   2              }
+  79   1              return count;
+  80   1      }
+  81          
+  82          void delay10us(void)
+  83          {
+  84   1              _nop_();
+  85   1              _nop_();
+  86   1              _nop_();
+  87   1              _nop_();
+  88   1              _nop_();
+  89   1              _nop_();
+  90   1      }
+  91          
+  92          void delayUs(u16 timers)
+  93          {
+  94   1              u16 i = 0;
+  95   1              for(i = 0; i < timers; ++i )
+  96   1              {
+  97   2                      delay10us();
+  98   2              }
+  99   1      }
+ 100          
+ 101          void delayMs(u16 timers)
+ 102          {
+ 103   1              u16 i = 0;
+ 104   1              u16 j = 0;
+ 105   1              for( i = 0; i < timers; ++i )
+ 106   1              {
+ 107   2                      for( j = 0; j < 100; ++j )
+ 108   2                      {
+ 109   3                      }
+ 110   2              }
+ 111   1      }
+ 112          
+ 113          void rstDHT11(void)
+ 114          {
+ 115   1              DHT11 = 1;
+ 116   1              _nop_();
+ 117   1              _nop_();
+C51 COMPILER V9.01   MAIN                                                                  01/30/2019 14:17:12 PAGE 3   
+
+ 118   1              DHT11 = 0;
+ 119   1              delayMs(20);
+ 120   1              DHT11 = 1;
+ 121   1              delayUs(3);
+ 122   1      }
+ 123          
+ 124          u8 readDHT11Byte(void)
+ 125          {
+ 126   1              u8 i, dat;
+ 127   1              for( i = 0; i < 8; ++i )
+ 128   1              {
+ 129   2                      while(!DHT11);
+ 130   2                      delayUs(1);
+ 131   2                      dat <<= 1;
+ 132   2                      if (DHT11)
+ 133   2                      {
+ 134   3                              dat += 1;
+ 135   3                      }
+ 136   2                      while(DHT11);
+ 137   2              }
+ 138   1              return dat;
+ 139   1      }
+ 140                  
+ 141          void readDHT11(u8 * buf)
+ 142          {
+ 143   1              u8 i;
+ 144   1              rstDHT11();
+ 145   1              if (!DHT11)
+ 146   1              {
+ 147   2                      while (!DHT11);
+ 148   2                      delayUs(4);
+ 149   2      
+ 150   2                      for (i = 1; i < 6; ++i)
+ 151   2                      {
+ 152   3                              buf[i] = readDHT11Byte();
+ 153   3                      }
+ 154   2                      delayUs(4);
+ 155   2                      if (buf[1] + buf[2] + buf[3] + buf[4] == buf[5])
+ 156   2                      {
+ 157   3                              buf[0] = 1;
+ 158   3                              //sendUart(buf, 6);
+ 159   3                      }
+ 160   2              }
+ 161   1      } 
+ 162          
+ 163          bit ISendByte(u8 sla,u8 c)
+ 164          {
+ 165   1         Start_I2c();              //启动总线
+ 166   1         SendByte(sla);            //发送器件地址
+ 167   1         if(ack==0)return(0);
+ 168   1         SendByte(c);              //发送数据
+ 169   1         if(ack==0)return(0);
+ 170   1         Stop_I2c();               //结束总线
+ 171   1         return(1);
+ 172   1      }
+ 173          
+ 174          u8 IRcvByte(u8 sla)
+ 175          {  unsigned char c;
+ 176   1      
+ 177   1         Start_I2c();          //启动总线
+ 178   1         SendByte(sla+1);      //发送器件地址
+ 179   1         if(ack==0)return(0);
+C51 COMPILER V9.01   MAIN                                                                  01/30/2019 14:17:12 PAGE 4   
+
+ 180   1         c=RcvByte();          //读取数据0
+ 181   1      
+ 182   1         Ack_I2c(1);           //发送非就答位
+ 183   1         Stop_I2c();           //结束总线
+ 184   1         return(c);
+ 185   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    921    ----
+   CONSTANT SIZE    =     13    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     49      17
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      2       1
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
