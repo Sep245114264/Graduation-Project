@@ -59,10 +59,9 @@
 /***************************/
 #header
 {
-    display: flex;
-    /*justify-content: center;*/
-    align-items: center;
-    justify-content: space-between;
+     display: flex;
+     align-items: center;
+     justify-content: space-between;
 }
 #header-title
 {
@@ -71,26 +70,52 @@
     font-size: 1.8em;
     text-shadow: 11px 4px 20px;
 }
+.nav-left
+{
+    display: flex;
+    align-items: center;
+}
+.nav-element-ul
+{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+}
+.nav-element-ul li
+{
+    width: 100px;
+    margin-left: 50px;
+    height: 57px;
+    line-height: 57px;
+    text-align: center;
+    font-size: 1.4em;
+    cursor: pointer;
+}
+.nav-element-ul li:hover
+{
+    background-color: #3d3d3d;
+}
+.nav-element-ul li:first-of-type
+{
+    color: orange;
+    border-bottom: 3px solid orange;
+}
+.nav-elememt-ul li:first-of-type::after
+{
+    content: '';
+    display: block;
+    width: 100%;
+    height:10px;
+    background-color: green;
+}
 #user-data
 {
+    right: 20px;
+    top: 0;
+    bottom: 0;
     margin-right: 20px;
 }
-
-/*#temperature-window
-{
-    background-color: #f7d699;
-    
-}
-
-#humidity-window
-{
-    background-color: #f7d699;
-}
-
-#lux-window
-{
-    background-color: #f7d699
-}*/
 
 /**********************************/
 /*      temperature-window        */
@@ -165,40 +190,72 @@ h4
 {
     margin-left: 20px;
 }
-#modal
+.modal, .modal-mask
 {
     display: none;
-    background-color: rgba(0, 0, 0, 0.5);
-    width: 100%;
-    height: 100%;
     position: fixed;
     top: 0;
     left: 0;
+    width: 100%;
+    height: 100%;
 }
-
-.fadeIn
+.modal-mask
 {
-    animation: fadeIn 0.6s;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: -1;
+}
+.modal-content
+{
+    z-index: 1;
 }
 
-@keyframes fadeIn 
+/**
+* 模态框
+*/
+.fadeInModal
+{
+    animation: fadeInModal 0.6s;
+}
+
+@keyframes fadeInModal
 {
     from {transform: scale(0)}
     to {transform: scale(1)}
 }
 
-.fadeOut
+.fadeOutModal
 {
-    animation: fadeOut 0.6s;
+    animation: fadeOutModal 0.6s;
 }
 
-@keyframes fadeOut
+@keyframes fadeOutModal
 {
     from {transform: scale(1)}
     to {transform: scale(0)}
 }
+/**
+* 遮罩层
+*/
+.fadeInMask
+{
+    animation: fadeInMask 0.6s;
+}
+@keyframes fadeInMask
+{
+    from {opacity: 0}
+    to {opacity: 1}
+}
+.fadeOutMask
+{
+    animation: fadeOutMask 0.6s;
+}
+@keyframes fadeOutMask
+{
+    from {opacity: 1}
+    to {opacity: 0}
+}
 
-#modal-content
+.modal-content
 {
     background-color: #fff;
     width: 80%;
@@ -212,7 +269,7 @@ h4
     justify-content: space-between;
 }
 
-#modal-title
+.modal-title
 {
     display: flex;
     justify-content: space-between;
@@ -220,7 +277,7 @@ h4
     border-bottom: 1px solid #ccc;
 }
 
-#close
+.close
 {
     font-size: 30px;
     color: #b7b7b7;
@@ -230,7 +287,7 @@ h4
     cursor: pointer;
 }
 
-#close:hover
+.close:hover
 {
     color: #95b4ed;
     cursor: pointer;
