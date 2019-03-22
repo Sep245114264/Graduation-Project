@@ -231,6 +231,68 @@ class Temperature extends Window
             this.cur += (data - this.cur) / Math.abs((data - this.cur));
         }
     }
+    setUI(temperature, fah, date)
+    {
+        const ctx = document.querySelector('.canvas').getContext('2d');
+        let temperatureList = temperature,
+            fahList = fah,
+            dateList = date;
+        let chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: dateList,
+                datasets: [{
+                    label: '摄氏度',
+                    borderColor: 'red',
+                    backgroundColor: 'red',
+                    data: temperatureList,
+                    fill: false,
+                    yAxisID: "temperature-axis",
+                }, {
+                    label: '华氏度',
+                    borderColor: 'blue',
+                    backgroundColor: 'blue',
+                    data: fahList,
+                    fill: false,
+                    yAxisID: "fahrenheit-axis"
+                }],
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        id: "temperature-axis",
+                        type: "linear",
+                        position: "left",
+                        ticks: {
+                            callback: function(value, index, values)
+                            {
+                                return value + '°C';
+                            }
+                        },
+                    }, {
+                        id: "fahrenheit-axis",
+                        type: "linear",
+                        position: "right",
+                        ticks: {
+                            callback: function(value, index, values)
+                            {
+                                return value + '°F'
+                            }
+                        }
+                    }]
+                },
+                title:{
+                    display: true,
+                    text: "温度实时变化曲线",
+                },
+                legend: {
+                    display: true,
+                    position: 'left',
+                }
+            }
+        })
+        
+    }
 }
 
 class Humidity extends Window
@@ -246,6 +308,47 @@ class Humidity extends Window
         this.xOffset = 0;
         this.cur = 0;
         this.CONFIG = this._setUIConfig();
+        
+    }
+
+    setUI(humidity, date)
+    {   
+        const ctx = document.querySelector('.canvas').getContext('2d');
+        let humidityList = humidity,
+            dateList = date;
+        let chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: dateList,
+                datasets: [{
+                    label: '湿度',
+                    borderColor: 'blue',
+                    backgroundColor: 'blue',
+                    data: humidityList,
+                    fill: false,
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            callback: function(value, index, values)
+                            {
+                                return value + '%';
+                            }
+                        },
+                    }]
+                },
+                title: {
+                    display: true,
+                    text: '湿度实时变化曲线',
+                },
+                legend: {
+                    display: true,
+                    position: 'left',
+                }
+            }
+        })
     }
 
     _setUIConfig()
@@ -386,6 +489,36 @@ class Lux extends Window
         this.context = this.canvas.getContext('2d');
         this.CONFIG = this._setUIConfig();
         //this._drawBulb();
+    }
+
+    setUI(lux, date)
+    {
+        const ctx = document.querySelector('.canvas').getContext('2d');
+        let luxList = lux,
+            dateList = date;
+        let chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: dateList,
+                datasets: [{
+                    label: '光照度',
+                    borderColor: 'orange',
+                    backgroundColor: 'orange',
+                    data: luxList,
+                    fill: false,
+                }]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: '光照度实时变化曲线',
+                },
+                legend: {
+                    display: true,
+                    position: 'left',
+                }
+            }
+        })
     }
 
     _setUIConfig()
@@ -802,7 +935,7 @@ draw = true
 data = 30;
 dy = 80;
 luxs = 50;
-per = 70;
+//per = 70;
 let node = document.querySelector('.inner'),
     canvasWidth = node.offsetWidth,
     canvasHeight = node.offsetHeight;
@@ -816,28 +949,78 @@ function render()
     temperature.drawMercury(data);
     humidity.render(dy);
     lux.render(luxs);
-    humidityEx.render(per);
+    humidityEx.render(dy);
     requestAnimationFrame(render);
 }
 function initEvent()
 {
-    let windowNode = document.querySelector('.content-window'),
-        close = document.querySelector('#close'),
-        modal = document.querySelector('#modal');
-    windowNode.addEventListener('click', (e) => {
-        modal.style.display = "block";
-        modal.classList.remove('fadeOut');
-        modal.classList.add('fadeIn');
+    function createTime(element, times)
+    {
+        let e = element;
+        setTimeout(() => {
+            e.style.display = 'none';
+        }, times);
+    }
+    let windowNode = document.getElementsByClassName('content-window'),
+        close = document.querySelector('.close'),
+        modal = document.querySelector('.modal'),
+        modalMask = document.querySelector('.modal-mask'),
+        modalContent = document.querySelector('.modal-content');
+    modalContent.addEventListener('click', (e) => {
+        e.stopPropagation();
     });
-    modal.addEventListener('click', (e) => {
-        modal.classList.add('fadeOut');
-        modal.style.display = 'none';
-        modal.classList.remove('fadeIn');
-        
+    for(let item of windowNode)
+    {
+        item.addEventListener('click', (e) => {
+            const id = e.currentTarget.id;
+            document.querySelector('#' + id).style.display = "block";
+            switch(id)
+            {
+                case "temperature-window":
+                    temperature.setUI(
+                        ['23', '21', '22', '25', '23', '24'], 
+                        ['73.4', '69.8', '71.6', '77', '73.4', '75.2'],
+                        ['3.22', '3.23', '3.24', '3.25', '3.26', '3.27']);
+                    break;
+                case "humidity-window":
+                    humidity.setUI(
+                        ['56', '57', '58', '59', '60', '61'],
+                        ['3.22', '3.23', '3.24', '3.25', '3.26', '3.27']);
+                    break;
+                case "lux-window":
+                    lux.setUI(
+                        ['100', '100', '100', '100', '100', '100'],
+                        ['3.22', '3.23', '3.24', '3.25', '3.26', '3.27']
+                    );
+                    break;
+            }
+            modal.style.display = "block";
+            modalMask.style.display = "block";
+            //modalContent.style.display = "block"
+            modalContent.classList.remove('fadeOutModal');
+            modalContent.classList.add('fadeInModal');
+            modalMask.classList.remove('fadeOutMask');
+            modalMask.classList.add('fadeInMask');
+        });
+    }
+   modal.addEventListener('click', (e) => {
+        modalContent.classList.remove('fadeInModal');
+        modalContent.classList.add('fadeOutModal');
+        modalMask.classList.remove('fadeInMask');
+        modalMask.classList.add('fadeOutMask');
+        createTime(modal, 550);
+        //createTime(modalContent, 600);
+        createTime(modalMask, 600);
         e.stopPropagation();
     });
     close.addEventListener('click', (e) => {
-        modal.style.display = 'none';
+        modalContent.classList.remove('fadeInModal');
+        modalContent.classList.add('fadeOutModal');
+        modalMask.classList.remove('fadeInMask');
+        modalMask.classList.add('fadeOutMask');
+        createTime(modal, 550);
+        //createTime(modalContent, 600);
+        createTime(modalMask, 600);
     });
 
 }

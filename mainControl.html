@@ -8,7 +8,15 @@
     </head>
     <body>
         <div id="header">
+            <div class="nav-left">
             <div id="header-title">智能家居控制系统</div>
+            <div class="nav-element">
+                <ul class="nav-element-ul">
+                    <li>首页</li>
+                    <li>历史记录</li>
+                </ul>
+            </div>
+        </div>
             <div id="user-data">你好，Admin</div>
         </div>
         <div id="content">
@@ -50,19 +58,21 @@
             </div>
         </div>
         <div id="footer"></div>
-        <div id="modal">
-            <div id="modal-content">
-                <header id="modal-title">
-                    <h4>温度曲线</h4>
-                    <span id="close">x</span>
+        <div class="modal">
+            <div class="modal-content">
+                <header class="modal-title">
+                    <h4>实时变化曲线</h4>
+                    <span class="close">x</span>
                 </header>
-                <div id="modal-body">
-                    <canvas id="canvas"></canvas>
+                <div class="modal-body">
+                    <canvas class="canvas"></canvas>
                 </div>
-                <footer id="modal-footer">
+                <footer class="modal-footer">
                 </footer>
             </div>
+            <div class="modal-mask"></div>
         </div>
+        <script type="text/javascript" src="js/chartjs/Chart.bundle.js"></script>
         <script type="text/javascript" src="js/main.js"></script>
         <!--
         <script type="text/javascript" src="js/network.js"></script>
