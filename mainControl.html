@@ -5,6 +5,7 @@
         <title>智能家居控制系统</title>
         <link rel="stylesheet" type="text/css" href="css/reset.css" />
         <link rel="stylesheet" type="text/css" href="css/style.css" />
+        <link rel="stylesheet" type="text/css" href="css/main.css" />
     </head>
     <body>
         <div id="header">
@@ -12,8 +13,9 @@
             <div id="header-title">智能家居控制系统</div>
             <div class="nav-element">
                 <ul class="nav-element-ul">
-                    <li>首页</li>
-                    <li>历史记录</li>
+                    <li class="active"><a href="./mainControl.html">首页</a></li>
+                    <li><a href="./history.html">历史记录</a></li>
+                    <li><a href="./control">操作面板</a></li>
                 </ul>
             </div>
         </div>
@@ -65,7 +67,9 @@
                     <span class="close">x</span>
                 </header>
                 <div class="modal-body">
-                    <canvas class="canvas"></canvas>
+                    <canvas class="canvas" id="temperature-canvas"></canvas>
+                    <canvas class="canvas" id="humidity-canvas"></canvas>
+                    <canvas class="canvas" id="lux-canvas"></canvas>
                 </div>
                 <footer class="modal-footer">
                 </footer>
@@ -74,6 +78,7 @@
         </div>
         <script type="text/javascript" src="js/chartjs/Chart.bundle.js"></script>
         <script type="text/javascript" src="js/main.js"></script>
+        <script type="text/javascript" src="js/network.js"></script>
         <!--
         <script type="text/javascript" src="js/network.js"></script>
         -->

@@ -105,7 +105,7 @@ device.logDevice()
 q = queue.Queue()
 
 t = threading.Thread(target=sendDataToMCU, args=(q,))
-t.start()
+#t.start()
 
 while True:
     # 对收到的数据进行处理，再放到数据库中

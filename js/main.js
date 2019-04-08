@@ -19,6 +19,11 @@ class Temperature extends Window
         this.cur = 0;
         this.CONFIG = this._setUIConfig();
         this.chart = null;
+        this.data = {
+            temperature:['23', '21', '22', '25', '23', '24'],
+            fah: ['73.4', '69.8', '71.6', '77', '73.4', '75.2']
+        };
+        this.date = ['3.22', '3.23', '3.24', '3.25', '3.26', '3.27'];
         this._drawUI();
     }
     _setUIConfig()
@@ -224,7 +229,15 @@ class Temperature extends Window
     {
         let context = this.context,
             CONFIG = this.CONFIG,
-            data = 5 * yOffset + 130;
+            data = 5 * yOffset + 130,
+            node = document.querySelector('#temperature-window-data'),
+            tempNode = document.querySelector('#celsius'),
+            fahNode = document.querySelector('#fah'),
+            moveable = this.canvas.width - 85,
+            perScale = moveable / 2 / 50;
+        node.style.top = moveable / 2 - yOffset * perScale;
+        tempNode.children[0].innerHTML = this.data.temperature[this.data.temperature.length - 1];
+        fahNode.children[0].innerHTML = this.data.fah[this.data.fah.length - 1];
         if (this.cur != data)
         {
             context.clearRect(CONFIG.LIQUID_COLUMN.LEFT.START.x, CONFIG.LIQUID_COLUMN.LEFT.START.Y, CONFIG.MERCURY_WIDTH, CONFIG.MERCURY_LENGTH);
@@ -232,14 +245,14 @@ class Temperature extends Window
             this.cur += (data - this.cur) / Math.abs((data - this.cur));
         }
     }
-    setUI({temperature, fah}, date)
+    setUI()
     {
-        const canvas = document.querySelector('.canvas');
+        const canvas = document.querySelector('#temperature-canvas');
         const ctx = canvas.getContext('2d');
         canvas.width = canvas.width;
-        let temperatureList = temperature,
-            fahList = fah,
-            dateList = date;
+        let temperatureList = this.data.temperature,
+            fahList = this.data.fah,
+            dateList = this.date;
         this.chart = new Chart(ctx, {
             type: 'line',
             data: {
@@ -267,6 +280,8 @@ class Temperature extends Window
                         type: "linear",
                         position: "left",
                         ticks: {
+                            suggestedMin: -20,
+                            suggestedMax: 50,
                             callback: function(value, index, values)
                             {
                                 return value + '°C';
@@ -277,6 +292,8 @@ class Temperature extends Window
                         type: "linear",
                         position: "right",
                         ticks: {
+                            suggestedMin: -10,
+                            suggestedMax: 120,
                             callback: function(value, index, values)
                             {
                                 return value + '°F'
@@ -307,24 +324,41 @@ class Temperature extends Window
         })
         
     }
-    addTemperature(data)
+    display()
+    {
+        let node = document.querySelector('#temperature-canvas');
+        closeCanvas();
+        node.style.display = 'block';
+    }
+    _addTemperature(data)
     {
         const chart = this.chart;
-        chart.data.datasets[0].data.push(data);
+        this.data.temperature.push(temperatureData);
     }
-    addFah(data)
+    _addFah(data)
     {
         const chart = this.chart;
-        chart.data.datasets[1].data.push(data);
+        this.data.fah.push(data);
     }
-    addDate(date)
+    _addDate(date)
     {
         const chart = this.chart;
-        chart.data.labels.push(date);
+        this.date.push(date);
     }
-    updateChart()
+    _clearData()
     {
-        this.chart.update();
+        this.date.shift();
+        this.data.temperature.shift();
+        this.data.fah.shift();
+        this.setUI();
+    }
+    updateChart(temp, fah, date)
+    {
+        const len = this.date.length;
+        len === 10 && this._clearData();
+        this._addTemperature(temp);
+        this._addFah(fah);
+        this._addDate(date);
     }
 }
 
@@ -340,18 +374,20 @@ class Humidity extends Window
         this.speed = 0.04;
         this.xOffset = 0;
         this.cur = 0;
+        this.chart = null;
+        this.data = ['56', '57', '58', '59', '60', '61'];
+        this.date = ['3.22', '3.23', '3.24', '3.25', '3.26', '3.27'];
         this.CONFIG = this._setUIConfig();
-        
     }
 
-    setUI(humidity, date)
+    setUI()
     {   
-        const canvas = document.querySelector('.canvas');
+        const canvas = document.querySelector('#humidity-canvas');
         const ctx = canvas.getContext('2d');
         canvas.width = canvas.width;
-        let humidityList = humidity,
-            dateList = date;
-        let chart = new Chart(ctx, {
+        let humidityList = this.data,
+            dateList = this.date;
+        this.chart = new Chart(ctx, {
             type: 'line',
             data: {
                 labels: dateList,
@@ -367,6 +403,8 @@ class Humidity extends Window
                 scales: {
                     yAxes: [{
                         ticks: {
+                            suggestedMin: 0,
+                            suggestedMax: 100,
                             callback: function(value, index, values)
                             {
                                 return value + '%';
@@ -384,6 +422,13 @@ class Humidity extends Window
                 }
             }
         })
+    }
+
+    display()
+    {
+        let node = document.querySelector('#humidity-canvas');
+        closeCanvas();
+        node.style.display = 'block';
     }
 
     _setUIConfig()
@@ -509,7 +554,27 @@ class Humidity extends Window
         this._drawText(cur);
         this.xOffset += this.speed;
     }
-
+    _addData(hum)
+    {
+        this.data.push(hum);
+    }
+    _addDate(date)
+    {
+        this.date.push(date);
+    }
+    _clearData()
+    {
+        //this.date = [];
+        //this.data = [];
+        this.setUI();
+    }
+    updateChart(hum, date)
+    {
+        const len = this.date.length;
+        len === 10 && this._clearData();
+        this._addData(hum);
+        this._addDate(date);
+    }
 }
 
 class Lux extends Window
@@ -524,16 +589,18 @@ class Lux extends Window
         this.context = this.canvas.getContext('2d');
         this.CONFIG = this._setUIConfig();
         this.chart = null;
+        this.data = ['100', '93', '100', '98', '101', '104'];
+        this.date = ['3.22', '3.23', '3.24', '3.25', '3.26', '3.27'];
         //this._drawBulb();
     }
 
-    setUI(lux, date)
+    setUI()
     {
-        const canvas = document.querySelector('.canvas');
+        const canvas = document.querySelector('#lux-canvas');
         const ctx = canvas.getContext('2d');
         canvas.width = canvas.width;
-        let luxList = lux,
-            dateList = date;
+        let luxList = this.data,
+            dateList = this.date;
         this.chart = new Chart(ctx, {
             type: 'line',
             data: {
@@ -547,6 +614,14 @@ class Lux extends Window
                 }]
             },
             options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            suggestedMin: 0,
+                            suggestedMax: 100,
+                        }
+                    }]
+                },
                 title: {
                     display: true,
                     text: '光照度实时变化曲线',
@@ -557,6 +632,13 @@ class Lux extends Window
                 }
             }
         })
+    }
+
+    display()
+    {
+        let node = document.querySelector('#lux-canvas');
+        closeCanvas();
+        node.style.display = 'block';
     }
 
     _setUIConfig()
@@ -793,6 +875,27 @@ class Lux extends Window
         this.canvas.height = this.height;
         this._drawBulb(cur);
     }
+    _addData(lux)
+    {
+        this.data.push(lux);
+    }
+    _addDate(date)
+    {
+        this.date.push(date);
+    }
+    _clearData()
+    {
+        this.data.shift();
+        this.date.shift();
+        this.setUI();
+    }
+    updateChart(lux, date)
+    {
+        const len = this.date.length;
+        len === 10 && this._clearData();
+        this._addData(lux);
+        this._addDate(date);
+    }
 }
 
 class HumidityEx extends Window
@@ -981,18 +1084,13 @@ draw = true
 temperatureData = 30;
 humidityData = 80;
 luxData = 50;
+openWindow = '';
 
 /**
- * 满30组数据清空一次
+ * 满10组数据清空一次
  */
-temperatureList = {
-    temperature: ['23', '21', '22', '25', '23', '24'],
-    fah: ['73.4', '69.8', '71.6', '77', '73.4', '75.2']
-}
 
-humidityList = ['56', '57', '58', '59', '60', '61'];
-luxList = ['100', '93', '100', '98', '101', '104'];
-date = ['3.22', '3.23', '3.24', '3.25', '3.26', '3.27']
+ 
 
 
 
@@ -1010,7 +1108,7 @@ function render()
     temperature.drawMercury(temperatureData);
     humidity.render(humidityData);
     lux.render(luxData);
-    humidityEx.render(dy);
+    humidityEx.render(humidityData);
     requestAnimationFrame(render);
 }
 function initEvent()
@@ -1030,24 +1128,29 @@ function initEvent()
     modalContent.addEventListener('click', (e) => {
         e.stopPropagation();
     });
+    closeCanvas();
+                    
     for(let item of windowNode)
     {
         item.addEventListener('click', (e) => {
-            const id = e.currentTarget.id;
-            document.querySelector('#' + id).style.display = "block";
-            switch(id)
+            openWindow = e.currentTarget.id;
+            document.querySelector('#' + openWindow).style.display = "block";
+            temperature.setUI();
+            humidity.setUI();
+            lux.setUI();
+            switch(openWindow)
             {
                 case "temperature-window":
-                    temperature.setUI(
-                        temperatureList, date);
+                    temperature.display();
                     break;
                 case "humidity-window":
-                    humidity.setUI(
-                        humidityList, date);
+                    humidity.display();
                     break;
                 case "lux-window":
-                    lux.setUI(
-                        luxList, date);
+                    lux.display();
+                    break;
+                default: 
+                    closeCanvas(); 
                     break;
             }
             modal.style.display = "block";
@@ -1080,14 +1183,10 @@ function initEvent()
     });
 
 }
-
-function addData(obj)
-{
-    temperatureList.temperature.push('10');
-}
-function deleteData()
-{
-    date.pop();
+function closeCanvas() {
+    document.querySelector('#temperature-canvas').style.display = 'none';
+    document.querySelector('#humidity-canvas').style.display = 'none';
+    document.querySelector('#lux-canvas').style.display = 'none';
 }
 
 /**
@@ -1100,12 +1199,26 @@ function deleteData()
  *     time:
  * }
  */
-function updage({temp, fah, humidity, lux, date, time})
+function update({temp, fah, hum, luxs, date, time})
 {
-    temperatureData = temp;
-    humidityData = fah;
-    luxData = lux;
-
+    temperatureData = Number(temp);
+    humidityData = Number(hum);
+    luxData = Number(luxs);
+    temperature.updateChart(temp, fah, date);
+    humidity.updateChart(hum, date);
+    lux.updateChart(luxs, date);
+    switch(openWindow)
+    {
+        case "temperature-window":
+            temperature.chart.update();
+            break;
+        case "humidity-window":
+            humidity.chart.update();
+            break;
+        case "lux-window":
+            lux.chart.update();
+            break;
+    }
 }
 
 initEvent();
