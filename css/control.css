@@ -1,0 +1,19 @@
+table
+{
+  width: 80%;
+  margin-top: 30px;
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+th, td
+{
+  height: 40px;
+  border: 1px solid black;
+  text-align: center;
+  font-size: 18px;
+}
+td
+{
+  font-size: 20px;
+}

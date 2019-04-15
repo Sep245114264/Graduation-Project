@@ -1,0 +1,22 @@
+#content
+{
+  flex-wrap: wrap;
+}
+.history-window
+{
+  width: 45%;
+  height: 400px;
+  margin: 16px 20px;
+}
+#history-temperature-window
+{
+}
+#history-fah-window
+{
+}
+#history-humidity-window
+{
+}
+#history-lux-window
+{
+}

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>智能家居控制系统</title>
+  <link rel="stylesheet" type="text/css" href="css/reset.css" />
+  <link rel="stylesheet" type="text/css" href="css/common.css" />
+  <link rel="stylesheet" type="text/css" href="css/mainControl.css" />
+</head>
+
+<body>
+  <div id="header">
+    <div class="nav-left">
+      <div id="header-title">智能家居控制系统</div>
+    </div>
+    <!--
+    <div id="user-data">你好，Admin</div>
+    -->
+    <div class="nav-icon">
+      <div class="bar" id="first-bar"></div>
+      <div class="bar" id="second-bar"></div>
+      <div class="bar" id="third-bar"></div>
+    </div>
+  </div>
+
+  <div id="content">
+    <div class="wrap">
+    <div class="content-window" id="temperature-window">
+      <div class="window-front" id="temperature-window-front">
+        <div class="window-name" id="temperature-title">室内温度</div>
+        <canvas id="temperature-animate"></canvas>
+      </div>
+    </div>
+    <div class="content-window" id="humidity-window">
+      <div class="window-front" id="humidity-window-front">
+        <div class="window-name" id="humidity-title">室内湿度</div>
+        <canvas id="humidity-animate"></canvas>
+      </div>
+    </div>
+    <div class="content-window" id="lux-window">
+      <div class="window-front" id="lux-window-front">
+        <div class="window-name" id="lux-title">室内光照度</div>
+        <canvas id="lux-animate"></canvas>
+      </div>
+    </div>
+  </div>
+  </div>
+  <div class="nav-menu">
+    <ul class="nav-element-ul">
+      <li class="link-to active"><a href="./mainControl_mobile.html"><div>首页</div></a></li>
+      <li class="link-to"><a href="./history_mobile.html"><div>历史记录</div></a></li>
+      <li class="link-to"><a href="./control_mobile.html"><div>操作面板</div></a></li>
+    </ul>
+  </div>
+  <div class="modal">
+    <div class="modal-content">
+      <header class="modal-title">
+        <h4>实时变化曲线</h4>
+        <span class="close">x</span>
+      </header>
+      <div class="modal-body">
+        <canvas class="canvas" id="temperature-canvas"></canvas>
+        <canvas class="canvas" id="humidity-canvas"></canvas>
+        <canvas class="canvas" id="lux-canvas"></canvas>
+      </div>
+      <footer class="modal-footer">
+      </footer>
+    </div>
+    <div class="modal-mask"></div>
+  </div>
+  <script src="https://cdn.bootcss.com/Chart.js/2.8.0/Chart.bundle.min.js"></script>
+  <script src="./js/nav.js"></script>
+  <script src="./js/main.js"></script>
+</body>
+
+</html>
