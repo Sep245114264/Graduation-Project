@@ -1,15 +1,18 @@
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0">
-        <title>智能家居控制系统</title>
-        <link rel="stylesheet" type="text/css" href="css/reset.css" />
-        <link rel="stylesheet" type="text/css" href="css/style.css" />
-        <link rel="stylesheet" type="text/css" href="css/main.css" />
-    </head>
-    <body>
-        <div id="header">
-            <div class="nav-left">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0">
+    <title>智能家居控制系统</title>
+    <link rel="stylesheet" type="text/css" href="css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" type="text/css" href="css/main.css" />
+</head>
+
+<body>
+    <div id="header">
+        <div class="nav-left">
             <div id="header-title">智能家居控制系统</div>
             <div class="nav-element">
                 <ul class="nav-element-ul">
@@ -19,68 +22,69 @@
                 </ul>
             </div>
         </div>
-            <div id="user-data">你好，Admin</div>
-        </div>
-        <div id="content">
-            <div class="content-window" id="temperature-window">
-                <div class="inner">
-                    <div class="window-front" id="temperature-window-front">
-                        <div class="window-name" id="temperature-title">室内温度</div>
-                        <canvas id="temperature-animate"></canvas>
-                    </div>
-                    <div class="window-back" id="temperature-window-back">
-                        <div class="window-data" id="temperature-window-data">
-                            <div id="celsius"><span>20</span>°C</div>
-                            <div id="dividing"></div>
-                            <div id="fah"><span>56</span>°F</div>
-                        </div>
-                    </div>
+        <div id="user-data">你好，Admin</div>
+    </div>
+    <div id="content">
+        <div class="content-window" id="temperature-window">
+            <div class="inner">
+                <div class="window-front" id="temperature-window-front">
+                    <div class="window-name" id="temperature-title">室内温度</div>
+                    <canvas id="temperature-animate"></canvas>
                 </div>
-            </div>
-            <div class="content-window" id="humidity-window">
-                <div class="inner">
-                    <div class="window-front" id="humidity-window-front">
-                        <div class="window-name" id="humidity-title">室内湿度</div>
-                        <canvas id="humidity-animate"></canvas>
-                    </div>
-                    <div class="window-back" id="humidity-window-back">
-                        <canvas id="humidity-data"></canvas>
-                    </div>
-                </div>
-            </div>
-            <div class="content-window" id="lux-window">
-                <div class="inner">
-                    <div class="window-front" id="lux-window-front">
-                        <div class="window-name" id="lux-title">室内光照度</div>
-                        <canvas id="lux-animate"></canvas>
-                    </div>
-                    <div class="window-back" id="lux-window-back">
+                <div class="window-back" id="temperature-window-back">
+                    <div class="window-data" id="temperature-window-data">
+                        <div id="celsius"><span>20</span>°C</div>
+                        <div id="dividing"></div>
+                        <div id="fah"><span>56</span>°F</div>
                     </div>
                 </div>
             </div>
         </div>
-        <div id="footer"></div>
-        <div class="modal">
-            <div class="modal-content">
-                <header class="modal-title">
-                    <h4>实时变化曲线</h4>
-                    <span class="close">x</span>
-                </header>
-                <div class="modal-body">
-                    <canvas class="canvas" id="temperature-canvas"></canvas>
-                    <canvas class="canvas" id="humidity-canvas"></canvas>
-                    <canvas class="canvas" id="lux-canvas"></canvas>
+        <div class="content-window" id="humidity-window">
+            <div class="inner">
+                <div class="window-front" id="humidity-window-front">
+                    <div class="window-name" id="humidity-title">室内湿度</div>
+                    <canvas id="humidity-animate"></canvas>
                 </div>
-                <footer class="modal-footer">
-                </footer>
+                <div class="window-back" id="humidity-window-back">
+                    <canvas id="humidity-data"></canvas>
+                </div>
             </div>
-            <div class="modal-mask"></div>
         </div>
-        <script type="text/javascript" src="js/chartjs/Chart.bundle.js"></script>
-        <script type="text/javascript" src="js/main.js"></script>
-        <script type="text/javascript" src="js/network.js"></script>
-        <!--
-        <script type="text/javascript" src="js/network.js"></script>
-        -->
-    </body>
+        <div class="content-window" id="lux-window">
+            <div class="inner">
+                <div class="window-front" id="lux-window-front">
+                    <div class="window-name" id="lux-title">室内光照度</div>
+                    <canvas id="lux-animate"></canvas>
+                </div>
+                <div class="window-back" id="lux-window-back">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="footer"></div>
+    <div class="modal">
+        <div class="modal-content">
+            <header class="modal-title">
+                <h4>实时变化曲线</h4>
+                <span class="close">x</span>
+            </header>
+            <div class="modal-body">
+                <canvas class="canvas" id="temperature-canvas"></canvas>
+                <canvas class="canvas" id="humidity-canvas"></canvas>
+                <canvas class="canvas" id="lux-canvas"></canvas>
+            </div>
+            <footer class="modal-footer">
+            </footer>
+        </div>
+        <div class="modal-mask"></div>
+    </div>
+    <script type="text/javascript" src="js/chartjs/Chart.bundle.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+    <script type="text/javascript" src="js/network.js"></script>
+    <!--
+ <script type="text/javascript" src="js/network.js"></script>
+ -->
+</body>
+
 </html>

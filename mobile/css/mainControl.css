@@ -1,0 +1,187 @@
+#content
+{
+    perspective: 1200px;
+    -webkit-perspective: 1200px;
+    -moz-perspective: 1200px;
+    perspective-origin: 50% -15%;
+    -webkit-perspective-origin: 50% -15%;
+    -moz-perspective-origin: 50% -15%;
+}
+.wrap
+{
+    transform-style: preserve-3d;
+    transform: rotateY(0deg);
+    transition: all .5s;
+}
+.temperature-card
+{
+    transform: rotateY(0deg);
+}
+.humidity-card
+{
+    transform: rotateY(120deg);
+}
+.lux-card
+{
+    transform: rotateY(-120deg);
+}
+.content-window
+/*.window-front*/
+{
+    position: absolute;
+    margin: auto;
+    left: 0;
+    right: 0;
+    margin-top: 20px;
+    width: 80%;
+    height: 80%;
+}
+.window-front
+{
+    border: solid 1px black;
+    background-color: #f7d699;
+}
+.window-front::after
+{
+    content: '';
+    clear: both;
+    display: block;
+    height: 0;
+}
+.left
+{
+    left: 10px !important;
+    z-index: -10;
+    transform: rotateY(45deg);
+}
+.right
+{
+    right: 10px !important;
+    z-index: -10;
+}
+.current
+{
+    z-index:0;
+}
+#temperature-window
+{
+    transform: translateZ(87px);
+}
+#humidity-window
+{
+    transform: translate3d(-75px,0,-43px) rotateY(240deg);
+}
+#lux-window
+{
+    transform: translate3d(75px,0,-43px) rotateY(-240deg);
+}
+
+/******************************************/
+/*                modal                   */
+/******************************************/
+h4
+{
+    margin-left: 20px;
+}
+.modal, .modal-mask
+{
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.modal-mask
+{
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: -1;
+}
+.modal-content
+{
+    z-index: 1;
+}
+
+/**
+* 模态框
+*/
+.fadeInModal
+{
+    animation: fadeInModal 0.6s;
+}
+
+@keyframes fadeInModal
+{
+    from {transform: scale(0)}
+    to {transform: scale(1)}
+}
+
+.fadeOutModal
+{
+    animation: fadeOutModal 0.6s;
+}
+
+@keyframes fadeOutModal
+{
+    from {transform: scale(1)}
+    to {transform: scale(0)}
+}
+/**
+* 遮罩层
+*/
+.fadeInMask
+{
+    animation: fadeInMask 0.6s;
+}
+@keyframes fadeInMask
+{
+    from {opacity: 0}
+    to {opacity: 1}
+}
+.fadeOutMask
+{
+    animation: fadeOutMask 0.6s;
+}
+@keyframes fadeOutMask
+{
+    from {opacity: 1}
+    to {opacity: 0}
+}
+
+.modal-content
+{
+    background-color: #fff;
+    width: 80%;
+    max-width: 720px;
+    height: 60%;
+    max-height: 500px;
+    margin: 100px auto;
+    border-radius: 10px;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-between;
+}
+
+.modal-title
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+}
+
+.close
+{
+    font-size: 30px;
+    color: #b7b7b7;
+    font-weight: bold;
+    margin-right: 20px;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.close:hover
+{
+    color: #95b4ed;
+    cursor: pointer;
+}

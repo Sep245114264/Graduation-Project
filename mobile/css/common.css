@@ -1,0 +1,95 @@
+#header
+{
+    background-color: black;
+    height: 60px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+#header-title
+{
+    font-family: "LiSu";
+    margin-left: 20px;
+    font-size: 1.8em;
+    text-shadow: 11px 4px 20px;
+}
+.nav-menu a:link, .nav-menu a:visited, .nav-menu a:hover, .nav-menu a:active
+{
+    color: #fff;
+}
+.collapse
+{
+  width: 150px !important;
+}
+.nav-left
+{
+    display: flex;
+    align-items: center;
+}
+.nav-menu
+{
+  position: absolute;
+  width: 0px;
+  top: 64px;
+  right: 0;
+  transition: all .5s;
+}
+.nav-element-ul
+{
+  overflow: hidden;
+  background-color: black;
+    margin: 0;
+    padding: 0;
+}
+.nav-element-ul li
+{
+    height: 57px;
+    width: 150px;
+    line-height: 57px;
+    text-align: center;
+    font-size: 1.4em;
+    cursor: pointer;
+}
+#user-data
+{
+    right: 20px;
+    top: 0;
+    bottom: 0;
+    margin-right: 20px;
+}
+
+.nav-icon
+{
+  width: 40px;
+  height: 40px;
+  margin-right: 20px;
+  padding: 0 6px;
+  border: 2px solid gray;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.bar
+{
+  height: 4px;
+  background-color: #fff;
+  margin-top: 7px;
+  border-radius: 4px;
+}
+.nav-element-ul li:hover
+{
+    background-color: #3d3d3d;
+}
+.nav-icon:hover .bar
+{
+  background-color: #79a8f9;
+}
+.link-to
+{
+    color: #fff;
+}
+.active, .active div
+{
+    color: orange;
+    border-bottom: 3px solid orange;
+}

@@ -230,14 +230,9 @@ class Temperature extends Window
         let context = this.context,
             CONFIG = this.CONFIG,
             data = 5 * yOffset + 130,
-            node = document.querySelector('#temperature-window-data'),
-            tempNode = document.querySelector('#celsius'),
-            fahNode = document.querySelector('#fah'),
             moveable = this.canvas.width - 85,
             perScale = moveable / 2 / 50;
         node.style.top = moveable / 2 - yOffset * perScale;
-        tempNode.children[0].innerHTML = this.data.temperature[this.data.temperature.length - 1];
-        fahNode.children[0].innerHTML = this.data.fah[this.data.fah.length - 1];
         if (this.cur != data)
         {
             context.clearRect(CONFIG.LIQUID_COLUMN.LEFT.START.x, CONFIG.LIQUID_COLUMN.LEFT.START.Y, CONFIG.MERCURY_WIDTH, CONFIG.MERCURY_LENGTH);
@@ -898,180 +893,6 @@ class Lux extends Window
     }
 }
 
-class HumidityEx extends Window
-{
-    constructor(canvasWidth, canvasHeight, canvasID)
-    {
-        super(canvasWidth, canvasHeight);
-        this.canvas = document.querySelector(canvasID);
-        this.canvas.width = canvasWidth;
-        this.canvas.height = canvasHeight;
-        this.context = this.canvas.getContext('2d');
-        this.cur = 0;
-    }
-    
-    _drawOuter()
-    {
-        let context = this.context,
-            PI = Math.PI,
-            MARGIN_TOP = 250,
-            OUTER_OFFSET = 150,
-            START_ANGLE = PI,
-            END_ANGLE = 0 * PI,
-            OUTER_RADIUS = OUTER_OFFSET,
-            WIDTH = 70;
-        context.beginPath();
-        context.lineWidth = 60;
-        let grd = context.createLinearGradient(this.width/2-OUTER_OFFSET+35, 0,this.width/2+OUTER_OFFSET-35, 0);
-        grd.addColorStop("0", "rgb(243,153,0");
-        grd.addColorStop("0.5", "rgb(87,250,255)");
-        grd.addColorStop("1.0", "blue");
-        context.strokeStyle = grd;
-        context.moveTo(this.width / 2 - OUTER_OFFSET+35, MARGIN_TOP);
-        context.arc(this.width / 2, MARGIN_TOP, OUTER_RADIUS-35, START_ANGLE, END_ANGLE);
-        context.stroke();
-    }
-
-    _drawScale()
-    {
-        let context = this.context,
-            MARGIN_TOP = 250,
-            OUTER_OFFSET = 150 - 64;
-        context.lineWidth = 1;
-        context.strokeStyle = "black";
-        context.font = "20px Arial";
-        for (let i = 1; i < 10; ++i)
-        {
-            context.save();
-            context.translate(this.width / 2, MARGIN_TOP);
-            context.rotate(i / 10 * Math.PI);
-            context.beginPath();
-            context.moveTo(0 - OUTER_OFFSET, 0);
-            context.lineTo(0 - OUTER_OFFSET - 10, 0);
-            context.stroke();
-            if (i % 2 == 0)
-            {
-                context.save();
-                context.translate(0 - OUTER_OFFSET+20, 0);
-                context.rotate(-i / 10 * Math.PI);
-                context.fillText(i * 10, -12, 2);
-                context.restore();
-            }
-            context.restore();
-        }
-    }
-
-    _drawPointerBase()
-    {
-        let context = this.context,
-            PI = Math.PI,
-            MARGIN_TOP = 250,
-            RADIUS = 10,
-            START_ANGLE = 0,
-            END_ANGLE = 2 * PI
-        context.strokeStyle ="#594c3c";
-        context.save();
-        context.translate(this.width / 2, MARGIN_TOP);
-        context.beginPath();
-        context.moveTo(0 + RADIUS, 0);
-        context.arc(0, 0, RADIUS, START_ANGLE, END_ANGLE);
-        context.stroke();
-        context.fillStyle = "#594c3c";
-        context.fill();
-        context.restore();
-    }
-
-    _drawPointer(per)
-    {
-        let context = this.context,
-            PI = Math.PI,
-            MARGIN_TOP = 250,
-            RADIUS = 10,
-            triangleHeight = 80
-        context.fillStyle = "#594c3c";
-        context.strokeStyle = "#594c3c";
-        context.save();
-        context.translate(this.width / 2, MARGIN_TOP);
-        context.beginPath();
-        context.rotate(per * PI/100);
-        context.moveTo(0, 0 + RADIUS);
-        context.lineTo(0, 0 - RADIUS);
-        context.lineTo(0 - triangleHeight, 0);
-        context.closePath();
-        context.stroke();
-        context.fill();
-        context.restore();
-    }
-
-    _drawAreaText()
-    {
-        let context = this.context,
-            MARGIN_TOP = 250
-        context.save();
-        context.translate(this.width / 2, MARGIN_TOP);
-        context.fillText('干燥', 0 - 150 - 30, 0 - 60);
-        context.fillText('舒适', 0 - 20, 0 - 160);
-        context.fillText('潮湿', 0 + 150 - 10, 0 - 60);
-        context.restore();
-    }
-
-    _drawDrop()
-    {
-        let context =  this.context,
-            MARGIN_TOP = 250,
-            PI = Math.PI
-        context.save();
-        context.translate(this.width / 2 - 80, MARGIN_TOP + 70);
-        context.beginPath();
-        context.rotate(-1/3*PI);
-        context.moveTo(0, 0);
-        context.lineTo(0 - 17.3, 0);
-        context.rotate(1/3*PI);
-        context.arc(0, 40, 20, 7/6*PI, 11/6*PI, true);
-        context.closePath();
-        context.stroke();
-        context.fillStyle = "#4bbaef";
-        context.fill();
-        let grd = context.createRadialGradient(0, 40, 20, -10, 50, 10);
-        grd.addColorStop("0.0", "#4bbaef");
-        grd.addColorStop("1.0", "#86d0f1");
-        context.fillStyle = grd;
-        context.fill();
-        context.restore();
-    }
-
-    _drawPercent(per)
-    {
-        let context = this.context,
-            MARGIN_TOP = 250
-        context.save();
-        context.translate(this.width / 2 - 30, MARGIN_TOP + 120);
-        context.font = "60px Arial";
-        context.fillText(per + '%', 0, 0);
-        context.restore();
-    }
-
-    render(per)
-    {
-        let context = this.context,
-            canvas = this.canvas,
-            cur = this.cur
-
-        canvas.height = canvas.height;
-        this._drawOuter();
-        this._drawScale();
-        this._drawPointerBase();
-        this._drawAreaText();
-        this._drawDrop();
-        if (cur != per)
-        {
-            this.cur += (per - cur) / Math.abs(per - cur);
-        }
-        this._drawPercent(cur);
-        this._drawPointer(cur);
-    }
-}
-
 /**
  * websock连接成功后，服务器从数据库中读取最新的一条数据 
  * 并把这条数据的值保存在全局变量中，同时服务器上的websocket
@@ -1090,25 +911,23 @@ openWindow = '';
  * 满10组数据清空一次
  */
 
- 
-
-
+let height = document.body.offsetHeight- 60;
+document.querySelector('#content').style.height = height + 'px';
 
 //per = 70;
-let node = document.querySelector('.inner'),
+let node = document.querySelector('.content-window'),
     canvasWidth = node.offsetWidth,
-    canvasHeight = node.offsetHeight;
+    canvasHeight = height - 140;//node.offsetHeight;
 let temperature = new Temperature(canvasWidth, canvasHeight, '#temperature-animate'),
     humidity = new Humidity(canvasWidth, canvasHeight, '#humidity-animate'),
     lux = new Lux(canvasWidth, canvasHeight, '#lux-animate');
-    humidityEx = new HumidityEx(canvasWidth, canvasHeight, '#humidity-data');
+    //humidityEx = new HumidityEx(canvasWidth, canvasHeight, '#humidity-data');
 
 function render()
 {
     temperature.drawMercury(temperatureData);
     humidity.render(humidityData);
     lux.render(luxData);
-    humidityEx.render(humidityData);
     requestAnimationFrame(render);
 }
 function initEvent()
@@ -1124,7 +943,29 @@ function initEvent()
         close = document.querySelector('.close'),
         modal = document.querySelector('.modal'),
         modalMask = document.querySelector('.modal-mask'),
-        modalContent = document.querySelector('.modal-content');
+        modalContent = document.querySelector('.modal-content'),
+        startX = 0,
+        wrapNode = document.querySelector('.wrap'),
+        currentCard = 0;
+    const TEMPERATURE_CARD = "wrap temperature-card",
+          HUMIDITY_CARD = "wrap humidity-card",
+          LUX_CARD = "wrap lux-card"
+          wrapClass = [TEMPERATURE_CARD, HUMIDITY_CARD, LUX_CARD];
+    document.addEventListener('touchstart', (event) => {
+        startX = event.changedTouches[0].pageX; })
+    document.addEventListener('touchend', (event) => {
+        let distance = event.changedTouches[0].pageX - startX;
+        if( distance > 100 )
+        {
+            currentCard === 2 ? currentCard-- : currentCard++;
+            wrapNode.className = wrapClass[currentCard]
+        }
+        else if (distance < -100)
+        {
+            currentCard === 0 ? currentCard++ : currentCard-- ;
+            wrapNode.className = wrapClass[currentCard];
+        }
+    })
     modalContent.addEventListener('click', (e) => {
         e.stopPropagation();
     });

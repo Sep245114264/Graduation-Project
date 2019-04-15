@@ -1,5 +1,4 @@
-import socket, datetime, sqlite3, threading, queue, json
-from . import var
+import socket, datetime, sqlite3, threading, queue, json, mmap, contextlib, time
 key = "19961113"
 
 class Device():
@@ -36,7 +35,7 @@ class Device():
             return
         data = self._byteToList(data)
         return {
-            'dataTime': str(datetime.datetime.now() + datetime.timedelta(hours=13)),
+            'dataTime': str(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")),
             'humidity': data[1] + '.' + data[2],
             'temperature': data[3] + '.' + data[4],
             'lux': str(255 - int(data[5])),
@@ -81,12 +80,16 @@ class DataBase():
         self.connection.close()
 
 def sendDataToMCU(queue):
-    #while True:
-        #queue.put( input().encode(encoding='utf-8') )
-    message = JSON.parse(var.text)
-    if message.new:
-        queue.put(message.message)
-
+    currentOrder = 0
+    while True:
+        with open('/home/sep/website/smartHome/global.dat', 'r') as f:
+            with contextlib.closing(mmap.mmap(f.fileno(), 1024, access=mmap.ACCESS_READ)) as m:
+                s = m.readline()
+                receData = json.loads(s.decode('UTF-8'))
+                if currentOrder != receData['order']:
+                    currentOrder = receData['order']
+                    queue.put(receData['order'])
+                time.sleep(1)
 
 HOST = "45.78.59.168"
 PORT = 8086
@@ -105,7 +108,7 @@ device.logDevice()
 q = queue.Queue()
 
 t = threading.Thread(target=sendDataToMCU, args=(q,))
-#t.start()
+t.start()
 
 while True:
     # 对收到的数据进行处理，再放到数据库中
@@ -117,6 +120,6 @@ while True:
         print('send success')
         data = q.get()
         print(data)
-        device.sendData(data)
+        device.sendData(bytes(data, encoding='UTF-8');
 device.logout()
 
