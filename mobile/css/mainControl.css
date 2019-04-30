@@ -20,10 +20,11 @@
 .humidity-card
 {
     transform: rotateY(120deg);
+    transition: all .5s;
 }
 .lux-card
 {
-    transform: rotateY(-120deg);
+    transform: rotateY(240deg);
 }
 .content-window
 /*.window-front*/

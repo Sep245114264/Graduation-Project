@@ -906,6 +906,7 @@ temperatureData = 30;
 humidityData = 80;
 luxData = 50;
 openWindow = '';
+turn = 0;
 
 /**
  * 满10组数据清空一次
@@ -945,25 +946,18 @@ function initEvent()
         modalMask = document.querySelector('.modal-mask'),
         modalContent = document.querySelector('.modal-content'),
         startX = 0,
-        wrapNode = document.querySelector('.wrap'),
-        currentCard = 0;
-    const TEMPERATURE_CARD = "wrap temperature-card",
-          HUMIDITY_CARD = "wrap humidity-card",
-          LUX_CARD = "wrap lux-card"
-          wrapClass = [TEMPERATURE_CARD, HUMIDITY_CARD, LUX_CARD];
+        wrapNode = document.querySelector('.wrap');
     document.addEventListener('touchstart', (event) => {
         startX = event.changedTouches[0].pageX; })
     document.addEventListener('touchend', (event) => {
         let distance = event.changedTouches[0].pageX - startX;
         if( distance > 100 )
         {
-            currentCard === 2 ? currentCard-- : currentCard++;
-            wrapNode.className = wrapClass[currentCard]
+            wrapNode.style.transform = `rotateY(${(++turn) * 120}deg)`;
         }
         else if (distance < -100)
         {
-            currentCard === 0 ? currentCard++ : currentCard-- ;
-            wrapNode.className = wrapClass[currentCard];
+            wrapNode.style.transform = `rotateY(${(--turn) * 120}deg)`;
         }
     })
     modalContent.addEventListener('click', (e) => {

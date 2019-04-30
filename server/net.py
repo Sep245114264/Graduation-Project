@@ -15,7 +15,7 @@ class Device():
             return
         print("connect to database...")
         self.db = DataBase('smartHome.db')
-        self.db.connect()
+        self.db.connect() 
         print("connect success")
         self.db.getCursor()
         print("get cursor success")
