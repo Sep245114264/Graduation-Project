@@ -1199,11 +1199,12 @@ function closeCanvas() {
  *     time:
  * }
  */
-function update({temp, fah, hum, luxs, date, time})
+function update({temp, fah, hum, luxs, date})
 {
     temperatureData = Number(temp);
     humidityData = Number(hum);
     luxData = Number(luxs);
+    let time = date.substr(11);
     temperature.updateChart(temp, fah, time);
     humidity.updateChart(hum, time);
     lux.updateChart(luxs, time);
